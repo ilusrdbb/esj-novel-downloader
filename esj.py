@@ -16,23 +16,23 @@ import requests, sys, os, re, socket, socks
 class downloader():
 	
     def __init__(self):
-		#列表页地址前缀
+        #列表页地址前缀
         self.list_url = 'https://www.esjzone.cc/list-11/'
-		#书籍页地址前缀
+        #书籍页地址前缀
         self.book_url = 'https://www.esjzone.cc'
-		#章节页地址前缀（esj中不需要，预留）
+        #章节页地址前缀（esj中不需要，预留）
         self.content_url = ''
-		#列表开始页码，从1开始
+        #列表开始页码，从1开始
         self.list_start_page = 1
-		#列表结束页码，需要加1
+        #列表结束页码，需要加1
         self.list_end_page = 40
-		#设置请求延迟，防止被封ip（esj中不需要，预留）
+        #设置请求延迟，防止被封ip（esj中不需要，预留）
         self.delay = 0
-		#设置请求默认重试次数
+        #设置请求默认重试次数
         self.http_retry = 2
-		#设置请求超时时间
+        #设置请求超时时间
         self.http_timeout = 15
-		#通用报错标识
+        #通用报错标识
         self.error_flag = 'error'
         #图片计数，用于给图片名字
         self.pic_count = 1
