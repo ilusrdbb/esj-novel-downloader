@@ -11,7 +11,7 @@ author by chaocai
 
 from bs4 import BeautifulSoup
 from requests.adapters import HTTPAdapter
-import requests, sys, os, re, socket, socks
+import requests, sys, os, re, socket
  
 class downloader():
 	
@@ -206,6 +206,8 @@ class downloader():
             self.get_pic_list(result, book_name + '/')
         except Exception as e:
             print('获取正文出错' + str(e))
+            #拿不到文章可能是贴吧或者轻国外链，写入到文件中
+            self.write(book_name + '/' + chapter_name + '.txt', url)
         else:
             #去除nbsp空白符
             result = result.text.replace('\xa0'*8,'\n\n')
