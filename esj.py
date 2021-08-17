@@ -88,9 +88,9 @@ class downloader():
         session = requests.Session()
         session.mount('http://', HTTPAdapter(max_retries=self.http_retry))
         session.mount('https://', HTTPAdapter(max_retries=self.http_retry))
-		if self.proxy_switch == 0:
-		    request = session.get(url, verify=False, headers=headers, timeout=self.http_timeout)
-		else:
+        if self.proxy_switch == 0:
+            request = session.get(url, verify=False, headers=headers, timeout=self.http_timeout)
+        else:
             request = session.get(url, verify=False, headers=headers, proxies=proxies, timeout=self.http_timeout)
         html = request.text
         return html
@@ -289,10 +289,10 @@ class downloader():
             session = requests.Session()
             session.mount('http://', HTTPAdapter(max_retries=self.http_retry))
             session.mount('https://', HTTPAdapter(max_retries=self.http_retry))
-			if self.proxy_switch == 0:
-			    request = session.get(src, verify=False, headers=headers, timeout=self.http_timeout)
-			else:
-			    request = session.get(src, verify=False, headers=headers, proxies=proxies, timeout=self.http_timeout)
+            if self.proxy_switch == 0:
+                request = session.get(src, verify=False, headers=headers, timeout=self.http_timeout)
+            else:
+                request = session.get(src, verify=False, headers=headers, proxies=proxies, timeout=self.http_timeout)
         except Exception as e:
             print('图片下载出错' + str(e))
         else:
