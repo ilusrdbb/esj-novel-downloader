@@ -158,11 +158,15 @@ class downloader():
             self.get_book_introduce(name, book_html)
             chapter_div_list = self.get_div_list(book_html, 'book')          
             for chapter in chapter_div_list :
-                chapter_name = chapter.p.string
-                if chapter_name is None:
-                    chapter_name = str(chapter['data-title'])
-                    chapter_name = re.sub('[\/:*?"<>|]','',chapter_name)
-                chapter_url = str(chapter['href'])
+                try:
+                    chapter_name = chapter.p.string
+                    if chapter_name is None:
+                        chapter_name = str(chapter['data-title'])
+                        chapter_name = re.sub('[\/:*?"<>|]','',chapter_name)
+                    chapter_url = str(chapter['href'])
+                except Exception as e:
+                    print('解析书籍章节列表出错：' + str(e))
+                    continue
                 self.get_content(chapter_url, name, chapter_name)
               
     def get_pic_list(self, tag, book_path):
