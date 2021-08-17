@@ -36,7 +36,7 @@ class downloader():
         #通用报错标识
         self.error_flag = 'error'
         #代理开关 0关1开
-        self.proxy_switch = 0
+        self.proxy_switch = 1
         
     def main(self):
         """ 
@@ -205,7 +205,7 @@ class downloader():
         print('开始获取内容：' + chapter_name + '||||书籍：' + book_name + '||||地址：' + url)
         #排除非法字符
         book_name = re.sub('[\:*?"<>|]','',book_name)
-        chapter_name = re.sub('[\:*?"<>|]','',chapter_name)
+        chapter_name = re.sub('[\:/*?"<>|]','',chapter_name)
         #文件校验，存在文件跳过，防止重复请求地址消耗资源
         if os.path.exists(book_name + '/' + chapter_name + '.txt'):
             print('已存在章节' + chapter_name + '||||书籍：' + book_name)
