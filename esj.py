@@ -12,7 +12,7 @@ author by chaocai
 from bs4 import BeautifulSoup
 from requests.adapters import HTTPAdapter
 from requests.packages.urllib3.exceptions import InsecureRequestWarning
-import requests, sys, os, re, socket
+import requests, sys, os, re, socket, uuid
  
 class downloader():
 	
@@ -35,8 +35,6 @@ class downloader():
         self.http_timeout = 15
         #通用报错标识
         self.error_flag = 'error'
-        #图片计数，用于给图片名字
-        self.pic_count = 1
 		#代理开关 0关1开
 		self.proxy_switch = 0
         
@@ -68,8 +66,6 @@ class downloader():
                         book_name = str(book_tag['title'])
                         book_url = self.book_url + str(book_tag.a['href'])
                         self.get_chapter_list(book_name, book_url)
-                        #重置图片计数
-                        self.pic_count = 1
                         #最后下载封面图片
                         book_pic = str(book_tag.find_all('div', class_='lazyload')[0].get('data-src'))
                         self.download_img(book_name + '/书籍封面.jpg', book_pic)
@@ -191,9 +187,9 @@ class downloader():
             div_list = tag.find_all('img')   
             for pic in div_list:
                 pic_src = str(pic['src'])
-                pic_name = str(self.pic_count) + '.jpg'
+				#图片名为uuid，有可能会重复下载，由于没多少图片，自行筛选吧
+                pic_name = str(uuid.uuid1()) + '.jpg'
                 self.download_img(book_path + pic_name, pic_src)
-                self.pic_count = self.pic_count + 1
         except Exception as e:
             print('获取图片出错：' + str(e))		  
 
