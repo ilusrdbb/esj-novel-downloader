@@ -11,6 +11,7 @@ author by chaocai
 
 from bs4 import BeautifulSoup
 from requests.adapters import HTTPAdapter
+from requests.packages.urllib3.exceptions import InsecureRequestWarning
 import requests, sys, os, re, socket
  
 class downloader():
@@ -36,6 +37,8 @@ class downloader():
         self.error_flag = 'error'
         #图片计数，用于给图片名字
         self.pic_count = 1
+		#代理开关 0关1开
+		self.proxy_switch = 0
         
     def main(self):
         """ 
@@ -43,11 +46,10 @@ class downloader():
 		主函数 
 		
         """
+		#全局禁用https安全请求警告
+        requests.packages.urllib3.disable_warnings(InsecureRequestWarning)
         #全局socket超时，防止卡死，并推荐阿里dns
         socket.setdefaulttimeout(20)
-        #代理翻墙
-        #socks.set_default_proxy(socks.SOCKS5, "127.0.0.1", 1080)
-        #socket.socket = socks.socksocket
         for i in range(self.list_start_page, self.list_end_page):
 			#遍历列表页
             print('开始获取列表，第' + str(i) + '页')
@@ -81,10 +83,19 @@ class downloader():
 		返回：html 响应页面html
 			
         """
+		#构造请求头
+        headers = {
+			"User-Agent":"Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/92.0.4515.131 Safari/537.36",
+        }
+		#设置翻墙的代理，v2ray为socks5端口+1
+        proxies = {'http':'http://127.0.0.1:1081','https':'http://127.0.0.1:1081'}
         session = requests.Session()
         session.mount('http://', HTTPAdapter(max_retries=self.http_retry))
         session.mount('https://', HTTPAdapter(max_retries=self.http_retry))
-        request = session.get(url, timeout=self.http_timeout)
+		if self.proxy_switch == 0:
+		    request = session.get(url, verify=False, headers=headers, timeout=self.http_timeout)
+		else:
+            request = session.get(url, verify=False, headers=headers, proxies=proxies, timeout=self.http_timeout)
         html = request.text
         return html
 	
@@ -269,10 +280,23 @@ class downloader():
         if os.path.exists(path):
             return
         try:
+			#构造请求头
+            headers = {
+				"User-Agent":"Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/92.0.4515.131 Safari/537.36",
+				"Accept":"text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,image/apng,*/*;q=0.8,application/signed-exchange;v=b3;q=0.9",
+				"Accept-encoding":"gzip, deflate, br",
+				"Accept-Language":"zh-CN,zh;q=0.9,en-US;q=0.8,en;q=0.7",
+				"Connection":"keep-alive"
+            }
+			#设置翻墙的代理，v2ray为socks5端口+1
+            proxies = {'http':'http://127.0.0.1:1081','https':'http://127.0.0.1:1081'}
             session = requests.Session()
             session.mount('http://', HTTPAdapter(max_retries=self.http_retry))
             session.mount('https://', HTTPAdapter(max_retries=self.http_retry))
-            request = session.get(src, verify=False, timeout=self.http_timeout)
+			if self.proxy_switch == 0:
+			    request = session.get(src, verify=False, headers=headers, timeout=self.http_timeout)
+			else:
+			    request = session.get(src, verify=False, headers=headers, proxies=proxies, timeout=self.http_timeout)
         except Exception as e:
             print('图片下载出错' + str(e))
         else:
