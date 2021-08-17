@@ -35,21 +35,21 @@ class downloader():
         self.http_timeout = 15
         #通用报错标识
         self.error_flag = 'error'
-		#代理开关 0关1开
-		self.proxy_switch = 0
+        #代理开关 0关1开
+        self.proxy_switch = 0
         
     def main(self):
         """ 
 		
-		主函数 
+        主函数 
 		
         """
-		#全局禁用https安全请求警告
+        #全局禁用https安全请求警告
         requests.packages.urllib3.disable_warnings(InsecureRequestWarning)
         #全局socket超时，防止卡死，并推荐阿里dns
         socket.setdefaulttimeout(20)
         for i in range(self.list_start_page, self.list_end_page):
-			#遍历列表页
+            #遍历列表页
             print('开始获取列表，第' + str(i) + '页')
             try:
                 list_html = self.get_request_html(self.list_url + str(i) + '.html')
@@ -74,16 +74,16 @@ class downloader():
     def get_request_html(self, url):
         """
 		
-		通用请求方法
-		参数：url 请求地址
-		返回：html 响应页面html
+        通用请求方法
+        参数：url 请求地址
+        返回：html 响应页面html
 			
         """
-		#构造请求头
+        #构造请求头
         headers = {
 			"User-Agent":"Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/92.0.4515.131 Safari/537.36",
         }
-		#设置翻墙的代理，v2ray为socks5端口+1
+        #设置翻墙的代理，v2ray为socks5端口+1
         proxies = {'http':'http://127.0.0.1:1081','https':'http://127.0.0.1:1081'}
         session = requests.Session()
         session.mount('http://', HTTPAdapter(max_retries=self.http_retry))
@@ -276,15 +276,15 @@ class downloader():
         if os.path.exists(path):
             return
         try:
-			#构造请求头
+            #构造请求头
             headers = {
-				"User-Agent":"Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/92.0.4515.131 Safari/537.36",
-				"Accept":"text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,image/apng,*/*;q=0.8,application/signed-exchange;v=b3;q=0.9",
-				"Accept-encoding":"gzip, deflate, br",
-				"Accept-Language":"zh-CN,zh;q=0.9,en-US;q=0.8,en;q=0.7",
-				"Connection":"keep-alive"
+                "User-Agent":"Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/92.0.4515.131 Safari/537.36",
+                "Accept":"text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,image/apng,*/*;q=0.8,application/signed-exchange;v=b3;q=0.9",
+                "Accept-encoding":"gzip, deflate, br",
+                "Accept-Language":"zh-CN,zh;q=0.9,en-US;q=0.8,en;q=0.7",
+                "Connection":"keep-alive"
             }
-			#设置翻墙的代理，v2ray为socks5端口+1
+            #设置翻墙的代理，v2ray为socks5端口+1
             proxies = {'http':'http://127.0.0.1:1081','https':'http://127.0.0.1:1081'}
             session = requests.Session()
             session.mount('http://', HTTPAdapter(max_retries=self.http_retry))
