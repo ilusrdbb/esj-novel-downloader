@@ -204,7 +204,7 @@ class downloader():
         """
         print('开始获取内容：' + chapter_name + '||||书籍：' + book_name + '||||地址：' + url)
         #排除非法字符
-        book_name = re.sub('[\:*?"<>|]','',book_name)
+        book_name = re.sub('[\:*.?"<>|]','',book_name)
         chapter_name = re.sub('[\:/*?"<>|]','',chapter_name)
         #文件校验，存在文件跳过，防止重复请求地址消耗资源
         if os.path.exists(book_name + '/' + chapter_name + '.txt'):
@@ -253,7 +253,7 @@ class downloader():
               
         """
         #排除非法字符
-        path = re.sub('[\:*?"<>|]','', path)
+        path = re.sub('[\:*.?"<>|]','', path)
         folder = os.path.exists(path)
         if not folder:
             try:
